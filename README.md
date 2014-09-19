@@ -1,4 +1,4 @@
-## PatternedEditText
+## PatternedEditText [![Build Status](https://travis-ci.org/faradaj/PatternedEditText.svg?branch=master)](https://travis-ci.org/faradaj/PatternedEditText.svg)
 
 `PatternedEditText` is an `EditText` that shows its text according to a pattern.
 
