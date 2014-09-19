@@ -6,25 +6,25 @@ import android.view.View;
 
 public class PetSavedState extends View.BaseSavedState {
 
-    private String mRealText;
+    private String mRawText;
 
     protected PetSavedState(Parcel source) {
         super(source);
-        mRealText = source.readString();
+        mRawText = source.readString();
     }
 
-    protected PetSavedState(Parcelable superState, String realText) {
+    protected PetSavedState(Parcelable superState, String rawText) {
         super(superState);
-        mRealText = realText;
+        mRawText = rawText;
     }
 
     protected String getRealText() {
-        return mRealText;
+        return mRawText;
     }
 
     @Override
     public void writeToParcel(Parcel destination, int flags) {
         super.writeToParcel(destination, flags);
-        destination.writeString(mRealText);
+        destination.writeString(mRawText);
     }
 }

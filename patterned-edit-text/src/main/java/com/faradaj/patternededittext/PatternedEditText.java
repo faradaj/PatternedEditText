@@ -17,7 +17,6 @@ public class PatternedEditText extends EditText {
     private String mPattern;
 
     private String mRawText = "";
-    private boolean mIsSetFromRestoreInstanceState = false;
 
     public PatternedEditText(Context context) {
         super(context);
@@ -49,9 +48,11 @@ public class PatternedEditText extends EditText {
 
             private int differenceCount = 0;
             public int toBeSetCursorPosition = 0;
+            public int mBeforeTextLength = 0;
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mBeforeTextLength = s.length();
                 if (!mForcing) {
                     sb = new StringBuilder();
                     differenceCount = PatternUtils.getDifferenceCount(s.toString().substring(0, getSelectionStart()), mPattern, mSpecialChar.charAt(0));
@@ -74,7 +75,11 @@ public class PatternedEditText extends EditText {
                 if (!mForcing) {
                     if (!isDeleting) {
                         try {
-                            sb.insert(getSelectionEnd() - count - differenceCount, s.subSequence(start, start + count));
+                            int from = getSelectionEnd() - count - differenceCount;
+                            if (from < 0) {
+                                from = 0;
+                            }
+                            sb.insert(from, s.subSequence(start, start + count));
                         } catch (StringIndexOutOfBoundsException e) {
                             Log.e("PatternedEditText: ", e.toString());
                             //getSelectionEnd() returns 0 after screen rotation.
@@ -87,7 +92,6 @@ public class PatternedEditText extends EditText {
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 if (!mForcing) {
                     mForcing = true;
                     mRawText = sb.toString();
@@ -99,15 +103,24 @@ public class PatternedEditText extends EditText {
                         convertedText = PatternUtils.convertTextToPatternedText(mRawText, mPattern, mSpecialChar.charAt(0));
                     }
                     toBeSetCursorPosition = getSelectionStart() + convertedText.length() - s.length();
+                    if (mBeforeTextLength == 0) {
+                        toBeSetCursorPosition = convertedText.length();
+                    }
                     s.clear();
                     s.append(convertedText);
-                    mForcing = false;
-                } else {
                     try {
+                        if (isDeleting) {
+                            if (toBeSetCursorPosition < convertedText.length()) {
+                                ++toBeSetCursorPosition;
+                            }
+                        } else if (toBeSetCursorPosition != convertedText.length()) {
+                            --toBeSetCursorPosition;
+                        }
                         setSelection(toBeSetCursorPosition);
                     } catch (IndexOutOfBoundsException e) {
                         Log.e("PatternedEditText: ", e.toString());
                     }
+                    mForcing = false;
                 }
             }
         };
@@ -121,10 +134,7 @@ public class PatternedEditText extends EditText {
 
     @Override
     public void setText(CharSequence text, BufferType type) {
-        if (!mIsSetFromRestoreInstanceState) {
-            this.mRawText = "";
-            mIsSetFromRestoreInstanceState = false;
-        }
+        this.mRawText = "";
         super.setText(text, type);
     }
 
@@ -141,7 +151,6 @@ public class PatternedEditText extends EditText {
         super.onRestoreInstanceState(savedState.getSuperState());
 
         mRawText = savedState.getRealText();
-        mIsSetFromRestoreInstanceState = true;
         setText(mRawText);
     }
 
