@@ -4,9 +4,9 @@
 
 If you want your `EditText` to show its text with slight modifications as the user inputs, you need to implement a `TextWatcher`.
 
-With using default `EditText`s, you need to implement another `TextWatcher`s for a different input type.
+With using default `EditText`s, you'd probably need to implement different `TextWatcher`s for different input types.
 
-`PatternedEditText` provides you a simple way to define a pattern of your need.
+`PatternedEditText` provides you a simple way to achieve this with a pattern of your need.
 
 For instance,
 - "#### #### #### ####" as Credit Card Numbers,
@@ -24,7 +24,7 @@ Define your `PatternedEditText` in your layout.
             xmlns:pet="http://schemas.android.com/apk/res-auto"
             android:id="@+id/edit_text_phone_number"
             pet:pattern="(###)-(### ## ##)"
-            pet:specialChar="#"     <!-- optional, '#' by default -->
+            pet:specialChar="#"     <!-- optional, # by default -->
             pet:showHint="true"     <!-- optional, false by default -->
             android:inputType="number"
             android:digits="0123456789 ()-"
