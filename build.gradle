@@ -5,26 +5,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 
 allprojects {
     repositories {
         mavenCentral()
-    }
-}
-
-task appStart(type: Exec, dependsOn: ':patterned-edit-text-sample:installDebug') {
-    def rootDir = project.rootDir
-    def localProperties = new File(rootDir, "local.properties")
-    if (localProperties.exists()) {
-        Properties properties = new Properties()
-        localProperties.withInputStream {
-            instr -> properties.load(instr)
-        }
-        def sdkDir = properties.getProperty('sdk.dir')
-        def adb = "$sdkDir/platform-tools/adb"
-        commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.faradaj.patternededittext.app/.MainActivity'
     }
 }
