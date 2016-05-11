@@ -1,17 +1,13 @@
 package com.faradaj.patternededittext.utils;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@Config(emulateSdk = 18)
-@RunWith(RobolectricTestRunner.class)
+
 public class PatternUtilsTest {
 
     private String mSpecialChar = "#";
@@ -24,27 +20,27 @@ public class PatternUtilsTest {
 
         String givenString;
 
-        mPattern="#-#";
+        mPattern = "#-#";
         givenString = "a";
         assertEquals("a", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
 
-        mPattern="#-#";
+        mPattern = "#-#";
         givenString = "ab";
         assertEquals("a-b", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
 
-        mPattern="#-#)#";
+        mPattern = "#-#)#";
         givenString = "abc";
         assertEquals("a-b)c", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
 
-        mPattern="#-#)#)";
+        mPattern = "#-#)#)";
         givenString = "abc";
         assertEquals("a-b)c)", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
 
-        mPattern="#### #### #### ####";
+        mPattern = "#### #### #### ####";
         givenString = "1234123412341234";
         assertEquals("1234 1234 1234 1234", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
 
-        mPattern="(###)-(### ## ##)";
+        mPattern = "(###)-(### ## ##)";
         givenString = "5321234567";
         assertEquals("(532)-(123 45 67)", PatternUtils.convertTextToPatternedText(givenString, mPattern, specialChar));
     }
@@ -83,7 +79,7 @@ public class PatternUtilsTest {
         assertTrue(!PatternUtils.isTextAppliesPattern(patternedText, mPattern, specialChar));
 
         patternedText = "(532)-(123 45 67)";
-        mPattern="(###)-(### ## ##)";
+        mPattern = "(###)-(### ## ##)";
         assertTrue(PatternUtils.isTextAppliesPattern(patternedText, mPattern, specialChar));
     }
 
@@ -93,33 +89,33 @@ public class PatternUtilsTest {
 
         String givenString;
 
-        mPattern="#-#";
+        mPattern = "#-#";
         givenString = "a-";
         assertEquals("a", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
 
-        mPattern="#-#";
+        mPattern = "#-#";
         givenString = "a-b";
         assertEquals("ab", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
 
-        mPattern="#-#)#";
+        mPattern = "#-#)#";
         givenString = "a-b)c";
         assertEquals("abc", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
 
-        mPattern="#-#)#)";
+        mPattern = "#-#)#)";
         givenString = "a-b)c)";
         assertEquals("abc", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
 
-        mPattern="#### #### #### ####";
+        mPattern = "#### #### #### ####";
         givenString = "1234 1234 1234 1234";
         assertEquals("1234123412341234", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
 
-        mPattern="(###)-(### ## ##)";
+        mPattern = "(###)-(### ## ##)";
         givenString = "(532)-(123 45 67)";
         assertEquals("5321234567", PatternUtils.convertPatternedTextToText(givenString, mPattern, specialChar));
     }
 
     @Test
-     public void testBasicPattern() {
+    public void testBasicPattern() {
         mPattern = "######";
 
         mSpans = PatternUtils.generateSpansFromPattern(mSpecialChar, mPattern);
